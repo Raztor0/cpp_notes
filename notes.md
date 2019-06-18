@@ -2,7 +2,7 @@
 
 ### § Introduction
 
-_ 1.1 Hello World! _
+_1.1 Hello World!_
 
 C++ is a compiled language. Source text is processed by a compiler, producing object files, which are combined by a linker to yield an executable program. An executable program created in C++ is not usually portable for different operating systems. When discussing the portability of C++ programs, we usually mean the portability of source code. 
 
@@ -27,7 +27,7 @@ Every C++ program must have exactly one global function named *main()*. The int 
 
 The line #include <iostream> instructs the compiler to include the declarations of the standard stream I/O facilities as found in _iostream_. The std:: specifies that the name cout is to be found in the standard-library namespace. 
   
-_ 1.2 Functions _
+_1.2 Functions_
   
   
 
