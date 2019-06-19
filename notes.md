@@ -242,7 +242,48 @@ Traffic_light& operator++(Traffic_light& t) {
  ++light;
  ```
  
- ### § Aside: Modularity
+ ### § Classes
+ 
+ A **class** is a user-defined type provided to represent a concept in the code of a program. 
+ 
+ **3.1 Concrete Types**
+ 
+ The basic idea of a concrete class is that they behave just like built-in types. For example, a vector and a string are much like built-in arrays, except that they have their own semantics and set of operations. 
+ 
+ The defining characteristic of a concrete type is that its representation is part of its definition. In many important cases, such as a vector, the representation is only one or more pointers to data stored elsewhere, but it is present in each object of a concrete class. This allows implementation to be optimally efficient in time and space. In particular, it allows us to:
+* refer to objects directly (and not just through pointers on the stack)
+* place objects of concrete types on the stack, in statically allocated memory, and in other objects
+* initialize objects immediately and completely
+* copy objects
+
+The representation can be private and accessible only through the member functions, but it is present. Therefore, if the representation changes in any significant way, a user must recompile. For types that don't change often, and where local variables provide much-needed clarity and efficiency, this is acceptable and often ideal. To increase flexibility, a concrete type can keep major parts of its representation on the free store (dynamic memory, heap) and access them through the part stored in the class object itself. 
+
+```C++
+class Complex {
+  double re,im;
+public:
+  complex(double r, double i): re{r}, im{i} {} // construct complex from two scalars
+  complex(double r): re{r}, im{0} {} // construct complex from one scalar.
+  complex(): re{0}, im{0} {} // default complex: {0,0}
+  
+  // get and setters
+  double real() const { return re; }
+  void real(double d) { re=d; }
+  double imag() const { return im; }
+  void image(double d) { im=d; }
+  
+  // operators
+  complex& operator += (complex z){ re += z.re, im+=z.im; return *this; } // add to re and im
+  complex& operator -= (complex z){ re-=z.re, im-=z.im; return *this; } //   and return the result
+  complex& operator*= (complex) { ... };
+  complex& operator/= (complex) { ... };
+};
+```
+
+
+
+
+
 
   
   
