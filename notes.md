@@ -128,7 +128,124 @@ void sort(const vector<double>& v); //sort v
 ```
 By using a reference, we ensure that for a call sort(my_vec), we do not copy my_vec and that it is really is my_vec that is sorted and not a copy of it. When we don't want to modify an argument, and still don't want the cost of copying, we use a const reference. 
 
-## § User-defined types
+### § User-defined types
+
+**2.1 Structures**
+
+The first step in building a new type is to organize the element into a **struct**
+```C++
+struct Vector {
+  int sz;
+  double* elem;
+ };
+ ```
+ 
+A variable of type **Vector** can be defined and initialized like this:
+```C++
+Vector v;
+void vector_init(Vector& v, int s) {
+  v.elem = new double[s];
+  v.sz = s;
+}
+```
+The new operator allocates memory from the heap. Objects allocated from the heap are independent of the scope from which they are created and "live" until they are destroyed using the **delete** operato.
+
+We use **.** (dot) to access **struct** members through a name (and through a reference) and **->** to access **struct** members through a pointer. For example,
+```C++
+void f(Vector v, Vector& rv, Vector* pv) {
+  int i1 = v.sz; // access through name.
+  int i2 = rv.sz; // access through reference.
+  int i4 = pv->sz; // access through pointer.
+}
+```
+
+**2.2 Classes**
+
+While structs provide the ability of seperating the data from its operations, a tighter connection between the representation and the operations is still needed for a user-defined type to have all the properties of a "real type". In particular, we may want to keep the representation inaccesssible to all users, so as to ease use, guarantee consistent use of data, and allow later improvements. To do that, we have to distinguish between the interface to a type (to be used by all) and its implementation (which has access to otherwise inaccessible data). The language mechanism for that is called a class.
+
+A **class** is defined to have a set of *members*, which can be data, function, or type members. The interace is defined by the **public** members of a class, and **private** members are accessible only through that interface. 
+
+```C++
+class Vector {
+public:
+  Vector(int s): elem{new double[s]}, sz{s} {} // Construct a vector
+  double& operator[](int i) { return elem[i]); } // element access via subscripting
+  int size() { return sz;}
+private:
+  double* elem; // pointer to the elements
+  int sz; // number of elements
+};
+
+// Call via
+Vector v(6)
+```
+
+Note: There is no fundamental difference between a **struct** and a **class**; a struct is simply a class with members public by default. For example, you can define constructors and other member functions for a struct.
+
+**2.3 Unions**
+
+A **union** is a struct in which all members are allocated at the same address so that the union occupies only as much space as its largest member. Naturally, a union can hold a value for only one member at a time. For example, consider a symbol table entry:
+
+```C++
+enum Type{ str, num };
+
+struct Entry {
+  char* name;
+  Type t;
+  char* s; // Use s if t == str
+  int i; // Use i if t == num
+};
+
+void f(Entry* p) {
+  if (p->t == str)
+      // Do stuff..
+   //...
+ }
+```
+
+The members **s** and **i** can never be used at the same time, so space is wasted. It can be easily recovered by specifiying that both should be members of a union, like this:
+
+```C++
+union Value {
+  char* s;
+  int i;
+};
+
+// Update struct entry
+struct Entry {
+  char* name;
+  Type t;
+  Value v; // Use v.s if t == str, v.i otherwise
+}
+```
+
+Maintaining the correspondence between a type field (here, t) and the type held in a union is error-prone. To avoid errors, one can encapsulate a union so that the correspondece between a union and union members is guaranteed. At the application level, abstractions relying on such *taged unions* are common and useful. 
+
+**2.4 Enums**
+
+In addition to classes, C++ supports enumerations.
+```C++
+enum class Color {red, blue, green};
+enum class Traffic_light {green, yellow, red};
+
+Color col = Color::red;
+Traffic_light light = Traffic_light:red;
+```
+
+The class after the enum specifies that a enumeration is strongly typed and that its enumerators are scoped. By default, an enum class has only assignment initialization and comparisons, but you can define operators for it.
+```C++
+Traffic_light& operator++(Traffic_light& t) {
+  // Switch traffic lights based on current light.
+ }
+ 
+ // Increment traffic light
+ ++light;
+ ```
+ 
+ ### § Aside: Modularity
+
+  
+  
   
   
   
