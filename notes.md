@@ -280,6 +280,90 @@ public:
 };
 ```
 
+**3.2 Abstract Types**
+
+An abstract type is a type that completely insulates a user from its implementation details. To do that, we decouple the interface from the representationand give up genuine local variables. Since we don't know anything about the representation of an abstract type (not even its size), we must allocate objects on the free store and access them through references or pointers.
+
+We can look at an example of an abstract type known as a **Container**. A container is an object holding a collection of elements (such as a vector). As an aside, we need to update our Container with a *destructor*. A **destructor** is a mechanism tha allows memory allocated on the free store to be deallocated. 
+
+```C++
+class Vector {
+private:
+  double* elem;
+  int sz;
+ public:
+  Vector(int s): elem{new double [s]}, sz{s} { // constructor: acquire resources
+    for (int i = 0; i != s; ++i) 
+      elem[i] = 0;
+   }
+   
+   ~Vector() {delete[] elem;} // destructor: release resources
+   
+   double& operator[](int i);
+   int size() const;
+};
+```
+
+The name of a destructor is the complement operator **~** followed by the name of the cla; it is the complement of the constructor. The destructor cleans up by freeing that memory allocated by the array using the delete operator. A destructor provides the user with seemless garbage collection as once the object is out of scope, the deconstructor will be initialized and destroyed. 
+
+Convenient ways exist to initialize containers. An *initializer_list* constructor is a standard-library type known the compiler that understands when we use a {}-list. 
+
+```C++
+class Vector {
+public:
+  Vector(std::initializer_list<double>);
+  // ...
+  void push_back(double);
+  ///
+};
+
+// ...
+
+Vector read(istream& is) {
+  Vector v;
+  for (double d;  is>>d;)
+    v.push_back(d);
+   return v;
+}
+```
+
+Note that virtual means "may be redefined later in a class derived from this one". A function declared virtual is called a *virtual function*. A class derived from a Container class provides an implementation for the Container interface. The syntax **=0** syntax says the function is pure virtual; that is, some class derived from Container **must** derive the function. A class with pure virtual function is called an **abstract class**.
+
+```C++
+class Container {
+public:
+  virtual double& operator[](int) = 0;
+  virtual int size() const = 0;
+  virtual ~Container() {}
+};
+```
+
+A container that implements the functions by the interface is defined below:
+
+```C++
+class Vector_container: public Container {
+  Vector v;
+public:
+  Vector_container(int s): v(s) {}
+  ~Vector_container() {}
+  
+  double& operator[](int i){ return v[i]; }
+  int size() const { return v.size(); }
+};
+```
+
+The **:public** can be read as "is derived from" or "is a subtype of". Class **Vector_container** is said to be derived from class Container, and class Container is said to be a *base* of class **Vector_container**. The members operator[]() and size() are said to *override* the corresponding members in the base class **Container**. 
+
+**3.3 Virtual Functions**
+
+How does the compiler know what method body to bind to a function call? At run time, the compiler convers the name of a virtual function into an index in a *virtual function table* (vtbl). Each class with *virtual functions* has its own vtbl identifying its virtual functions. 
+
+The functions in the *vtbl* allow the object to be used correctly even when the size of the object and the layout of its data are unkown tothe caller. The virtual call mechamism can be made almost as efficient as a "normal function call" mechanism (within 25%). Its space overhead is one pointer in each object of a class with virtual functions plus one vtbl for each such class.
+
+
+
+
+
 
 
 
