@@ -45,7 +45,7 @@ double d1 = 2.3;
 double d2 {2.3};
 ```
 
-The **=** is traditional and dates back to C, but if in doubt, use the general {}-list form. If nothing else, it saves you from conversions that lost information!
+The **=** is traditional and dates back to C, but if in doubt, use the general {}-list form. If nothing else, it saves you from conversions that lose information!
 
 ```C++
 int i1 = 7.2; // i1 becomes 7
@@ -53,7 +53,7 @@ int i2 {7.2}; // error: floating-point to integer conversion.
 int i3 = {7.2}; // error: floating-point to integer conversion (the = is redundant)
 ```
 
-Unfortunately, conversions that lose information (*narrowing conversions*), suc as double to int and int to char are allowed and implicility applied. The problems caused by implicit narrowing conversions is a price paid for C compatability. 
+Unfortunately, conversions that lose information (*narrowing conversions*), such as double to int and int to char are allowed and implicility applied. The problems caused by implicit narrowing conversions is a price paid for C compatability. 
 
 When defining a variable, you don't need to state its type explicitly when it can be deduced from the initializer:
 
@@ -72,12 +72,12 @@ A declaration introduces its name into a scope:
 * Namescape scope: A name is called a *namescape member name* if it is defined in a namespace. 
 * Global scope: A name not declared inside any other construction is a *global name* and is in the *global namespace*
 
-In addition, objects are created using the **new** keyword. An object must be constructed (intitialized) before it used and will be destroyed at the end of its scope. For a namespace object, the point of destruction is the end of the program. For a member, the point of destruction is determined by the point of destruction of the object of which it is a member. An object created by **new** "live" until destroyed by **delete**. 
+In addition, objects are created using the **new** keyword. An object must be constructed (intitialized) before it used and will be destroyed at the end of its scope. For a namespace object, the point of destruction is the end of the program. For a member, the point of destruction is determined by the point of destruction of the object of which it is a member. An object created by **new** "lives" until destroyed by **delete**. 
 
 **1.4 Constants**
 
 C++ supports two notions of immutability:
-* **const**: meaning roughly "*I promise not to change this value*". This is used primary to specify interfaces, so that data can be passed to functions without fear of it being modified. The compilre enforces this.
+* **const**: meaning roughly "*I promise not to change this value*". This is used primary to specify interfaces, so that data can be passed to functions without fear of it being modified. The compiler enforces this.
 * **constexpr**: meaning roughly "to be evaluated at compile time". This is used primarily to specify constants, to allow placement of data in read-only memory, and for performance.
 
 For example,
@@ -126,7 +126,7 @@ A prefix unary * means "contents of" and a prefix unary & means "address of". Re
 ```C++
 void sort(const vector<double>& v); //sort v
 ```
-By using a reference, we ensure that for a call sort(my_vec), we do not copy my_vec and that it is really is my_vec that is sorted and not a copy of it. When we don't want to modify an argument, and still don't want the cost of copying, we use a const reference. 
+By using a reference, we ensure that for a call sort(my_vec), we do not copy my_vec and that it really is my_vec that is sorted and not a copy of it. When we don't want to modify an argument, and still don't want the cost of copying, we use a const reference. 
 
 ### § User-defined types
 
