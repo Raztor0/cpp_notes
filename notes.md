@@ -29,7 +29,7 @@ The line #include <iostream> instructs the compiler to include the declarations 
   
 **1.2 Functions and Fundamental Types**
 
-A function declaration gives the name of a function, the type of value returned (if any), and the number and types of arguments that must be supplied in a call. The argumen types are checked and implicit argumentt ype conversion takes place when necessary at compile-time. A function declaration may contain argument names, but is not required. The type of a function consists of the return type and the argument types. For class-member functions, the naem of the class is also part of the fuction type. 
+A function declaration gives the name of a function, the type of value returned (if any), and the number and types of arguments that must be supplied in a call. The argumen types are checked and implicit argument type conversion takes place when necessary at compile-time. A function declaration may contain argument names, but is not required. The type of a function consists of the return type and the argument types. For class-member functions, the name of the class is also part of the function type. 
 
 ```C++
 double get(const vector<double>& vec, int index); // type: double(const vector<double>&, int)
